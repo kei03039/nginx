@@ -1,8 +1,10 @@
-FROM nginx:stable
-
-LABEL Name=echo-ip Version=0.0.5
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY cert.crt /etc/nginx/conf.d/cert.crt
-COPY cert.key /etc/nginx/conf.d/cert.key
-
-CMD ["nginx", "-g", "daemon off;"]
+FROM openjdk:8u141
+LABEL description="Echo IP Java Application"
+EXPOSE 60433
+RUN git clone https://github.com/iac-source/inbuilder.git
+WORKDIR inbuilder
+RUN chmod 700 mvnw
+RUN ./mvnw clean package
+RUN mv target/app-in-host.jar /opt/app-in-image.jar
+WORKDIR /opt
+ENTRYPOINT [ "java", "-jar", "app-in-image.jar" ]
