@@ -11,8 +11,8 @@ pipeline {
       steps {
         sh '''
         docker build -t multi-img .
-        docker tag multi-img 192.168.0.51:5000/multi-img
-        docker push 192.168.0.51:5000/multi-img
+        docker tag multi-img 192.168.0.51:5000/nginx
+        docker push 192.168.0.51:5000/nginx
         '''
       }
     }
@@ -20,9 +20,9 @@ pipeline {
     stage('deploy kubernetes') {
       steps {
         sh '''
-        kubectl create deployment nginx-1 --image=192.168.0.51:5000/multi-img
-        kubectl expose deployment nginx-1 --type=LoadBalancer --port=9000 \
-                                               --target-port=80 --name=nginx-svc-1
+        kubectl create deployment nginx-2 --image=192.168.0.51:5000/multi-img
+        kubectl expose deployment nginx-2 --type=LoadBalancer --port=8080 \
+                                               --target-port=80 --name=nginx-svc-2
         '''
       }
     }
