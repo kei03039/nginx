@@ -10,8 +10,8 @@ pipeline {
     stage('docker build and push') {
       steps {
         sh '''
-        docker build -t 192.168.0.51:5000/echo-ip .
-        docker push 192.168.0.51:5000/echo-ip
+        docker build -t 192.168.0.51:5000/nginx .
+        docker push 192.168.0.51:5000/nginx
         '''
       }
     }
